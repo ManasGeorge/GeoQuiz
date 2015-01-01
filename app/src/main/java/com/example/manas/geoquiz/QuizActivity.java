@@ -9,14 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 
 public class QuizActivity extends ActionBarActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private Button mPrevButton;
     private TextView mQuestionTextView;
 
     private TrueFalse[] mQuestionBank = new TrueFalse[] {
@@ -37,6 +36,7 @@ public class QuizActivity extends ActionBarActivity {
         mTrueButton = (Button)findViewById(R.id.true_button);
         mFalseButton = (Button)findViewById(R.id.false_button);
         mNextButton = (Button)findViewById(R.id.next_button);
+        mPrevButton = (Button)findViewById(R.id.prev_button);
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
 
         updateQuestion();
@@ -62,6 +62,14 @@ public class QuizActivity extends ActionBarActivity {
                 updateQuestion();
             }
         });
+
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex - 1 + mQuestionBank.length) % mQuestionBank.length;
+                updateQuestion();
+            }
+        });
     }
 
     private void updateQuestion() {
@@ -71,7 +79,7 @@ public class QuizActivity extends ActionBarActivity {
 
     private void checkAnswer(boolean userPressedTrue){
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].ismTrueQuestion();
-        int messageResId = 0;
+        int messageResId;
 
         if(userPressedTrue == answerIsTrue){
             messageResId = R.string.correct_toast;
